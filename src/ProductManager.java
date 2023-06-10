@@ -103,23 +103,27 @@ public class ProductManager {
     System.out.println("Total Amount: " + order.getTotalAmount());
   }
 
+ ////Added 3 funtions
   public List<Product> getActiveProductsSortedByPrice() {
-    // ProductStatus'ü ACTIVE olan ürünleri fiyatlarına göre sıralayıp döndüren metodu yazın
-    return null;
-  }
-
+	  return products.values()
+	  .stream()
+	  .filter(product -> product.getProductStatus() == ProductStatus.ACTIVE)
+	  .sorted(Comparator.comparing(Product::getPrice))
+	  .toList();
+	  }
   public double calculateAveragePriceInCategory(String category) {
-    // String olarak verilen category'e ait olan ürünlerin fiyatlarının ortalamasını yoksa 0.0 döndüren metodu yazın
-    // tip: OptionalDouble kullanımını inceleyin.
-    return 0.0;
-  }
-
+	  OptionalDouble averagePrice = products.values()
+	  .stream()
+	  .filter(product -> product.getCategory().equals(category) && product.getProductStatus() == ProductStatus.ACTIVE)
+	  .mapToDouble(Product::getPrice)
+	  .average();
+	  return averagePrice.orElse(0.0);
+	  }
   public Map<String, Double> getCategoryPriceSum() {
-    // category'lere göre gruplayıp, her bir kategoride bulunan ürünlerin toplam fiyatını stream ile hesaplayıp
-    // döndüren metodu yazın
-    // örn:
-    // category-1 105.2
-    // category-2 45.0
-    return null;
-  }
+	  Map<String, Double> categoryPriceSumMap = products.values()
+	  .stream()
+	  .collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(product -> product.getPrice() * product.getStock())));
+	  return categoryPriceSumMap;
+	  }
+
 }
