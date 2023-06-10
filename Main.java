@@ -21,7 +21,7 @@ public class Main {
         for (Product product : activeProductsSortedByPrice) {
             System.out.println(product.getName() + " - " + product.getPrice());
         }
-        
+       
         // calculateAveragePriceInCategory fonksiyonunun çağrılması  2 category için test edildi
         String category = "Category 1";
         String category2 = "Category 2";
